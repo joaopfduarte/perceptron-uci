@@ -3,24 +3,29 @@ import converter.Register;
 import enumeration.DataClasses;
 
 import java.util.Map;
+import java.util.List;
 
 public class PerceptronMain {
 
-    private final DatTwoCDataConverter dataConverter = new DatTwoCDataConverter();
-    public Register dataParser(String[] data, DataClasses dataClass) {
-        Map<String[], DataClasses> convertedData = dataConverter.converter();
-    }
-
     public static void main(String[] args) {
-        // Vertebral-column Base
-        PerceptronImp PerceptronImpE = new PerceptronImp(2, 1);
+        DatTwoCDataConverter dataConverter = new DatTwoCDataConverter();
+        List<Register> data = dataConverter.converter();
+
+        if (data.isEmpty()) {
+            System.err.println("Nenhum dado foi carregado do arquivo.");
+            return;
+        }
+
+        PerceptronImp perceptron = new PerceptronImp(6, 1);
+
         for (int epoch = 0; epoch < 10000; epoch++) {
-            double errE = 0;
-            for (int a = 0; a < baseI.length; a++) {
-                double[] out = PerceptronImpE.treinar(baseI[a][0], baseI[a][1]);
-                errE += Math.abs(out[0] - baseI[a][1][0]);
+            double errE = 0.0;
+            for (Register sample : data) {
+                double[] out = perceptron.treinar(sample.getFeatures(), sample.getTarget());
+                errE += Math.abs(out[0] - sample.getTarget()[0]);
             }
-            System.out.printf("[Vertebral-column] Epoch: %d - Error: %.4f%n", epoch, errE);
+            System.out.printf("[Vertebral-column 2C] Epoch: %d - Error: %.4f%n", epoch, errE);
         }
     }
+
 }
