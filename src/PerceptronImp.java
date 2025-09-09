@@ -7,6 +7,13 @@ public class PerceptronImp {
         this.qtdaInput = qtdaInput;
         this.qtdaOutput = qtdaOutput;
         this.W = new double[this.qtdaOutput][this.qtdaInput + 1];
+
+        //inicializar com pesos aleatórios
+        for (int i = 0; i < this.qtdaOutput; i++) {
+            for (int j = 0; j < this.qtdaInput + 1; j++) {
+                this.W[i][j] = Math.random() * 2 - 1;
+            }
+        }
     }
 
     public double[] treinar(double[] Xin, double[] Yout) {
@@ -16,19 +23,13 @@ public class PerceptronImp {
             X[i + 1] = Xin[i];
         }
 
-        double[] Y = new double[Yout.length + 1];
-        Y[0] = 1;
-        for (int i = 0; i < Yout.length; i++) {
-            Y[i + 1] = Yout[i];
-        }
-
         double[] out = new double[this.qtdaOutput];
         for (int i = 0; i < this.qtdaOutput; i++) {
             double u = 0;
             for (int j = 0; j < this.qtdaInput + 1; j++) {
                 u += X[j] * W[i][j];
             }
-            out[i] = 1 / (1 + Math.exp(-u));
+            out[i] = 1.0 / (1.0 + Math.exp(-u));
         }
 
         for (int i = 0; i < this.qtdaOutput; i++) {
